@@ -52,6 +52,17 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+  Future<void> _clearCart() async {
+    await DatabaseHelper.instance.clearCart();
+    setState(() {
+      widget.cart.clear();
+      _cartDetailsFuture = Future.value([]);
+      _total = 0;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Keranjang berhasil dikosongkan.')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,15 +134,17 @@ class _CartScreenState extends State<CartScreen> {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Batal'),
-                style: OutlinedButton.styleFrom(foregroundColor: Colors.grey),
+              child: ElevatedButton(
+                onPressed: _clearCart,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                ),
+                child: const Text('Kosongkan Keranjang'),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
+     ),
+);
+}
 }

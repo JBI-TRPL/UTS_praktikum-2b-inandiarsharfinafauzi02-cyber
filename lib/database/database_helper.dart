@@ -226,4 +226,9 @@ class DatabaseHelper {
 
     return result.map((json) => model.TransactionDetail.fromMap(json)).toList();
   }
+  Future<void> clearCart() async {
+  final db = await instance.database;
+  await db.delete('transaction_details');
+  await db.delete('transactions');
+}
 }
